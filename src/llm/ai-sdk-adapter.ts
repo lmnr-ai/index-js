@@ -34,7 +34,10 @@ export class AISdkAdapter {
 
   constructor(provider: LanguageModelV1) {
     this.provider = provider;
-    if (this.provider.provider === 'anthropic') {
+    if (this.provider.provider === 'anthropic'
+      && process.env.AWS_ACCESS_KEY_ID
+      && process.env.AWS_SECRET_ACCESS_KEY
+    ) {
       this.fallbackProvider = new AISdkAdapter(bedrock(this.provider.modelId));
     }
   }
